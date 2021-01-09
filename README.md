@@ -1,7 +1,5 @@
 # Water drink reminder
 
-## About
-
 When sitting on the desk all day i tend to forget to drink water.
 
 This projects visually reminds me to drink more water and also shows the progress I make throught the day to reach my drinking goal.
