@@ -29,6 +29,7 @@ Stay hydrated! 💦 💦
 ## Libraries
 
 HX711_ADC: https://github.com/olkal/HX711_ADC
+
 Adafruit_NeoPixel: https://github.com/adafruit/Adafruit_NeoPixel
 
 ## Wiring
