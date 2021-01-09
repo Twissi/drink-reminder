@@ -90,11 +90,11 @@ You can use the reset button on the Arduino.
 
 > Do i need to subtract the weight of my glas?
 
-No, the weight of the glas does not matter. Although you should not use glasses with different weight throughout a day.
+No, the weight of the glas does not matter. Although you should not use glasses with different weights throughout a day.
 
 > Can i power the ledstrip and the weight sensor module throught the same Arduino?
 
-Yes, you should be able to. But i run into issue with the weight changing when turning LEDs on vs. off. Thats why i switched to power the ledstrip with an external power source.
+Yes, you can. But i run into issues with the weight changing when turning LEDs on vs. off. Thats why i switched to power the ledstrip with an external power source.
 
 > Do i need the resistor?
 
