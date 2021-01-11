@@ -67,7 +67,7 @@ Update the following variables:
 6. After the led shows red (without blinking), put on the glas filled with water
 7. When removing or adding the glass the led will blink purple (measuring)
 8. Use the glass normally. Refill when needed
-9. When putting the glas back on the weight the leds will show you your status (you start with one green led and you reached your goal when all leds show green)
+9. When putting the glas back on the weight the leds will show your progress (you start with one green led and you reached your goal when all leds are green)
 10. Each day you need to restart the program in order to start with total water amount of 0
 
 ## Color coding
@@ -80,7 +80,7 @@ Update the following variables:
 
 **Blinking blue leds**: Drink reminder!
 
-**Green led**: Total of water you drank today (1 pixel to max pixel count)
+**Green led**: Number of leds show drink progress towards your goal
 
 ## FAQ
 
@@ -96,21 +96,20 @@ No, the weight of the glas does not matter. Although you should not use glasses 
 
 Yes, you can. But i run into issues with the weight changing when turning LEDs on vs. off. Thats why i switched to power the ledstrip with an external power source.
 
-> Do i need the resistor?
+> Do i need the resistor for the led strip?
 
 I don't use it but it's recommended by Adafruit: https://learn.adafruit.com/adafruit-neopixel-uberguide/best-practices
 
-> Are you missing a capacitor?
+> Are you missing a capacitor for the led strip?
 
 You are probably right. A capacitor is recommended by Adafruit: https://learn.adafruit.com/adafruit-neopixel-uberguide/best-practices
 
-> The drinking goal status doesn't work when I power the Arduino from an external power source.
+> The weight cell amount is slowly increasing throughout the day
 
-Yes, I am still trying to figure out why. :D
+I see the same issue. Starting with 0.09 the weight of the empty load cell increases throughout the day. Not sure why.
 
 ## ToDos
 
-- fix goal status when powering Arduino with external power source
-- 3d print a case
-- transition setup and code to a smaller board
-- move all components + leds into the case
+- [ ] 3d print a case
+- [ ] transition setup and code to a smaller board
+- [ ] move all components + leds into the case

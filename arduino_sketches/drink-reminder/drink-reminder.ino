@@ -20,7 +20,7 @@
    Red led: glas is missing
    Blinking purple led: measurement in progress
    Blinking blue leds: Drink reminder!
-   Green led: Drink progress towards your goal
+   Green led: Number of LEDs show drink progress towards your goal
 */
 
 #ifdef __AVR__
