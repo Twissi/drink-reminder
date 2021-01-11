@@ -20,7 +20,7 @@
    Red led: glas is missing
    Blinking purple led: measurement in progress
    Blinking blue leds: Drink reminder!
-   Green led: Total of water you drank today (1-15 pixels)
+   Green led: Drink progress towards your goal
 */
 
 #ifdef __AVR__
@@ -130,7 +130,7 @@ void onNewWeight(float weight) {
     return;
   }
 
-  if (weight < 1.00) {
+  if (weight < 100.00) {
     isLoaded = 0;
   } else {
     isLoaded = 1;
@@ -161,9 +161,10 @@ void onNewWeight(float weight) {
         Serial.print("Good job, water decreased! Your drank in total:");
         Serial.println(totalWaterAmount);
       }
-      lastWeightLoaded = weight;
 
-      displayTotalWaterAmount(strip.Color(0, 255, 0), 50); // Green led = glas found, show total amount
+      lastWeightLoaded = weight;  
+      
+      displayTotalWaterAmount(strip.Color(0, 255, 0), 0); // Green led = glas found, show total amount
       displayColor(strip.Color(0, 0, 0, 255), 0);
     } else {
       displayColor(strip.Color(255, 0, 0), 0); // Red led = glas missing
@@ -209,6 +210,7 @@ void displayColor(uint32_t c, uint8_t wait) {
 
 // LEDStrip animation: Only fill as many dots mapping the totalWaterAmount in percent
 void displayTotalWaterAmount(uint32_t c, uint8_t wait) {
+  lastLedColor = c;
   int amountPerPixel = floor(WATERMAX_ML / strip.numPixels());
   int numberOfPixels = ceil(totalWaterAmount / amountPerPixel);
 
