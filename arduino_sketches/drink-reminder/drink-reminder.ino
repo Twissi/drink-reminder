@@ -63,8 +63,7 @@ bool prevIsLoaded = 0;
 float lastWeightLoaded;
 float lastWeightMeasurement = 0;
 long lastReminderMillis = 0;
-uint32_t lastLedColor = strip.Color(0, 0, 0, 255);
-uint32_t savedLedColor = strip.Color(0, 0, 0, 255);
+uint32_t savedLedColors[LEDS_COUNT];
 
 void setup() {
   Serial.begin(57600); delay(10);
@@ -73,7 +72,7 @@ void setup() {
 
   // strip setup
   strip.begin();
-  displayBlinkingColor(strip.Color(255, 0, 0), 50);
+  displayBlinkingColor(strip.Color(255, 0, 0), 50); // Red blinking lights
 
   LoadCell.begin();
   float calibrationValue = WEIGHT_CALIBRATION_VALUE;
@@ -87,7 +86,7 @@ void setup() {
   else {
     LoadCell.setCalFactor(calibrationValue); // set calibration value (float)
     Serial.println("Startup is complete");
-    displayColor(strip.Color(255, 0, 0), 0);
+    displayColor(strip.Color(255, 0, 0), 0); // Red light
   }
 }
 
@@ -113,9 +112,9 @@ void loop() {
   if (millis() >= lastReminderMillis + REMINDER_INTERVAL) {
     Serial.println("Don't forget to drink water!");
     lastReminderMillis = millis();
-    saveLedColor(lastLedColor);
-    displayBlinkingColor(strip.Color(0, 0, 127), 50);
-    resetLedColor();
+    saveLedColors();
+    displayBlinkingColor(strip.Color(0, 0, 127), 50); // Blue blinking lights
+    resetLedColors();
   }
 }
 
@@ -149,8 +148,8 @@ void onNewWeight(float weight) {
       
       if (!lastWeightLoaded) {
         lastWeightLoaded = weight;
-        displayColor(strip.Color(0, 255, 0), 50); // Green led = glas found
-        displayColor(strip.Color(0, 0, 0, 255), 0); // White
+        displayColor(strip.Color(0, 255, 0), 50); // Green lights = glas found, no prev weight found
+        displayWhite();
         return;
       }
       // check if water decreased
@@ -164,10 +163,10 @@ void onNewWeight(float weight) {
 
       lastWeightLoaded = weight;  
       
-      displayTotalWaterAmount(strip.Color(0, 255, 0), 0); // Green led = glas found, show total amount
-      displayColor(strip.Color(0, 0, 0, 255), 0);
+      displayTotalWaterAmount(strip.Color(0, 255, 0), 0); // Green lights = glas found, show total amount
+      displayWhite();
     } else {
-      displayColor(strip.Color(255, 0, 0), 0); // Red led = glas missing
+      displayColor(strip.Color(255, 0, 0), 0); // Red lights = glas missing
     }
   }
 }
@@ -182,25 +181,33 @@ bool isStableValue(float weight) {
   if (LOG_UNSTABLE_MEASUREMENT) {
     Serial.println("Unstable measurement, please wait!");
   }
-  displayColor(strip.Color(255, 0, 213), 10);
-  displayColor(strip.Color(0, 0, 0, 255), 0); // White
+  displayColor(strip.Color(255, 0, 213), 10); // Blue blinking lights
+  displayWhite();
   lastWeightMeasurement = weight;
   return false;
 }
 
 // save led color
-void saveLedColor(uint32_t c) {
-  savedLedColor = c;
+void saveLedColors() {
+  for (uint16_t i = 0; i < strip.numPixels(); i++) {
+    savedLedColors[i] = strip.getPixelColor(i);
+  }
 }
 
 // set led strip to saved led color
-void resetLedColor() {
-  displayColor(savedLedColor, 0);
+void resetLedColors() {
+  for (uint16_t i = 0; i < strip.numPixels(); i++) {
+    strip.setPixelColor(i, savedLedColors[i]);
+    strip.show();
+  }
+}
+
+void displayWhite() {
+  displayColor(strip.Color(0, 0, 0, 255), 0); // White
 }
 
 // LEDStrip animation: Fill the dots one after the other with a color
 void displayColor(uint32_t c, uint8_t wait) {
-  lastLedColor = c;
   for (uint16_t i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, c);
     strip.show();
@@ -210,7 +217,6 @@ void displayColor(uint32_t c, uint8_t wait) {
 
 // LEDStrip animation: Only fill as many dots mapping the totalWaterAmount in percent
 void displayTotalWaterAmount(uint32_t c, uint8_t wait) {
-  lastLedColor = c;
   int amountPerPixel = floor(WATERMAX_ML / strip.numPixels());
   int numberOfPixels = ceil(totalWaterAmount / amountPerPixel);
 
@@ -221,7 +227,7 @@ void displayTotalWaterAmount(uint32_t c, uint8_t wait) {
     Serial.print("Show total amount pixel(s): ");
     Serial.println(numberOfPixels);
   }
-  lastLedColor = c;
+
   for (uint16_t i = 0; i < numberOfPixels; i++) {
     strip.setPixelColor(i, c);
     strip.show();
