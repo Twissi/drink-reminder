@@ -163,8 +163,7 @@ void onNewWeight(float weight) {
 
       lastWeightLoaded = weight;  
       
-      displayTotalWaterAmount(strip.Color(0, 255, 0), 0); // Green lights = glas found, show total amount
-      displayWhite();
+      displayTotalWaterAmount(strip.Color(0, 255, 0), 50); // Green lights = glas found, show total amount
     } else {
       displayColor(strip.Color(255, 0, 0), 0); // Red lights = glas missing
     }
